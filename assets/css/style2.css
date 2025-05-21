@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+  background: url("../img/bg.gif") no-repeat;
+  font-family: 'Poppins', sans-serif;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.upload-box {
+  text-align: center;
+}
+
+button,
+input[type="submit"] {
+  background: #353b7d;
+  color: rgb(253, 253, 253);
+  width: 100px;
+  height: 40px;
+  border: 4px solid rgb(36, 35, 35);
+  border-radius: 20px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  transition: all 0.3s ease-in-out;
+  background: lightgray;
+  color: rgb(0, 0, 0);
+}
+
+.upload-btn {
+  background: #353b7d;
+  color: rgb(253, 253, 253);
+  padding: 10px 20px;
+  cursor: pointer;
+  text-align: center;
+  border: 4px solid rgb(36, 35, 35);
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  display: inline-block;
+}
+
+.upload-btn:hover {
+  transition: all 0.3s ease-in-out;
+  background: #3e52dd;
+  color: rgb(255, 255, 255);
+}
+
+.drop-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.uploading {
+  display: none;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  animation: blink 1s infinite; /* Menambahkan animasi dengan nama "blink" */
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.upload-area {
+  width: 100%;
+  max-width: 25rem;
+  background-color: rgba(23, 23, 48, 0.7);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem 1.875rem 5rem 1.875rem;
+  margin: 0.625rem;
+  text-align: center;
+}
+
+.upload-area h1 {
+  font-size: 25px;
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.upload-area h2 {
+  font-size: 16px;
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.upload-area h3 {
+  font-size: 12px;
+  color: #fff;
+  margin-top: 0;
+}
+
+h6 {
+  font-size: 12px;
+  color: #fff;
+  margin-top: 0;
+}
+
+footer {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+footer a {
+  text-decoration: none;
+  color: rgb(20, 185, 207);
+}
+
+footer a.b {
+  color: rgb(74, 11, 146);
+}

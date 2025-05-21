@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+  background: url("../img/bg.gif") no-repeat;
+  font-family: 'Poppins', sans-serif;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header {
+    background-color: #353b7d;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .header__logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section {
+    margin-bottom: 40px;
+  }
+  
+  .section__title {
+    color: #353b7d;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .section__description {
+    margin-bottom: 20px;
+  }
+  
+  .endpoint__code,
+  .responses__code,
+  .errors__code,
+  .example__code {
+    background-color: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 4px;
+    overflow-x: auto; /* Menambahkan scroll horizontal jika perlu */
+    white-space: pre-wrap; /* Memastikan teks wrap ketika melebihi lebar parent */
+  }
+  
+  .endpoint__code {
+    font-weight: bold;
+  }
+  
+  .responses__code,
+  .errors__code {
+    margin-top: 10px;
+  }
+  
+  .responses__body,
+  .errors__body {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow-x: auto; /* Menambahkan scroll horizontal jika perlu */
+    white-space: pre-wrap; /* Memastikan teks wrap ketika melebihi lebar parent */
+  }
+  
+  .responses__body code,
+  .errors__body code {
+    display: block;
+  }
+  
+  .example__code {
+    margin-top: 20px;
+  }
+  
+  .footer {
+    background-color: #353b7d;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer__text {
+    font-size: 12px;
+  }
+  
+  .footer__link {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer__link:hover {
+    text-decoration: underline;
+  }
+  
