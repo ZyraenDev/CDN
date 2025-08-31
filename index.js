@@ -67,12 +67,14 @@ app.get("/", (req, res) => {
 app.get("/docs", (req, res) => {
   res.render("docs.ejs");
 });
-
+//batss
+  
 // ===== Upload ke folder lokal (lama) =====
 app.post("/upload", (req, res) => {
   if (!req.files || !req.files.file) {
-    return res.status(400).send("No file uploaded.");
+    return res.status(400).json({ status: false, message: "No file uploaded." });
   }
+
   const file = req.files.file;
   const originalName = file.name;
   const fileExtension = originalName.split(".").pop();
@@ -82,7 +84,7 @@ app.post("/upload", (req, res) => {
   const size = file.size;
 
   if (size > 300000000) {
-    return res.send("Sorry, that file is too large.");
+    return res.status(400).json({ status: false, message: "Sorry, that file is too large." });
   }
 
   let number = 0;
@@ -96,14 +98,28 @@ app.post("/upload", (req, res) => {
     type: type,
     size: formatFileSize(size),
   });
-  file.mv("./file/" + name);
-  res.redirect("/data/" + name);
+
+  file.mv("./file/" + name, (err) => {
+    if (err) return res.status(500).json({ status: false, message: "Error saving file." });
+
+    res.status(200).json({
+      creator: "FuadXyro",
+      status: true,
+      message: "File uploaded successfully",
+      data: {
+        url: `https://${req.get("host")}/${name}`,
+        type,
+        size: formatFileSize(size),
+      },
+    });
+  });
 });
+
 
 // ===== Upload ke lokal API (lama) =====
 app.post("/api/uplod", (req, res) => {
   if (!req.files || !req.files.file) {
-    return res.status(400).send("No file uploaded.");
+    return res.status(400).json({ status: false, message: "No file uploaded." });
   }
 
   const file = req.files.file;
@@ -115,7 +131,7 @@ app.post("/api/uplod", (req, res) => {
   const size = file.size;
 
   if (size > 300000000) {
-    return res.status(400).json({ message: "Sorry, that file is too large." });
+    return res.status(400).json({ status: false, message: "Sorry, that file is too large." });
   }
 
   let number = 0;
@@ -129,12 +145,13 @@ app.post("/api/uplod", (req, res) => {
     type: type,
     size: formatFileSize(size),
   };
+
   file.mv("./file/" + name, (err) => {
     if (err) {
-      return res.status(500).json({ message: "Error uploading file." });
+      return res.status(500).json({ status: false, message: "Error uploading file." });
     }
 
-    const jsonResponse = {
+    res.status(200).json({
       creator: "FuadXyro",
       status: true,
       message: "File uploaded successfully",
@@ -143,24 +160,18 @@ app.post("/api/uplod", (req, res) => {
         type: type,
         size: formatFileSize(size),
       },
-    };
-
-    res.set("Content-Type", "application/json");
-    res.status(200).send(JSON.stringify(jsonResponse, null, 2));
+    });
   });
 });
+
 
 // ===== Upload dari URL (lama) =====
 app.get("/api/upload/to", (req, res) => {
   const url = req.query.url;
   const namefile = req.query.namefile;
 
-  if (!url) {
-    return res.status(400).send("URL not provided.");
-  }
-  if (!namefile) {
-    return res.status(400).send("Filename not provided.");
-  }
+  if (!url) return res.status(400).json({ status: false, message: "URL not provided." });
+  if (!namefile) return res.status(400).json({ status: false, message: "Filename not provided." });
 
   const cleanedName = cleanFileName(namefile);
 
@@ -168,9 +179,7 @@ app.get("/api/upload/to", (req, res) => {
     .get(url)
     .on("response", function (response) {
       if (response.statusCode !== 200) {
-        return res
-          .status(400)
-          .send("Failed to download the file from the provided URL.");
+        return res.status(400).json({ status: false, message: "Failed to download the file." });
       }
 
       const contentType = response.headers["content-type"];
@@ -185,45 +194,43 @@ app.get("/api/upload/to", (req, res) => {
 
         if (size > 300000000) {
           fs.unlinkSync(filePath);
-          return res.send("Sorry, the downloaded file is too large.");
-        } else {
-          let number = 0;
-          while (db.storage.hasOwnProperty(name)) {
-            number += 1;
-            name = `${cleanedName}-${number}.${fileExtension}`;
-          }
+          return res.status(400).json({ status: false, message: "Sorry, the downloaded file is too large." });
+        }
 
-          db.set(name, {
-            name: name,
+        let number = 0;
+        while (db.storage.hasOwnProperty(name)) {
+          number += 1;
+          name = `${cleanedName}-${number}.${fileExtension}`;
+        }
+
+        db.set(name, {
+          name: name,
+          type: contentType,
+          size: formatFileSize(size),
+        });
+
+        res.status(200).json({
+          creator: "FuadXyro",
+          status: true,
+          message: "File uploaded successfully",
+          data: {
+            url: `https://${req.get("host")}/${name}`,
             type: contentType,
             size: formatFileSize(size),
-          });
-
-          const jsonResponse = {
-            creator: "FuadXyro",
-            status: true,
-            message: "File uploaded successfully",
-            data: {
-              url: `https://${req.get("host")}/${name}`,
-              type: contentType,
-              size: formatFileSize(size),
-            },
-          };
-
-          res.set("Content-Type", "application/json");
-          res.status(200).send(JSON.stringify(jsonResponse, null, 2));
-        }
+          },
+        });
       });
     })
     .on("error", (err) => {
-      res.status(500).send("Error downloading the file.");
+      res.status(500).json({ status: false, message: "Error downloading the file.", error: err.message });
     });
 });
+
 
 // ===== Upload ke GitHub =====
 app.post("/api/upload", async (req, res) => {
   if (!req.files || !req.files.file) {
-    return res.status(400).send("No file uploaded.");
+    return res.status(400).json({ status: false, message: "No file uploaded." });
   }
 
   const file = req.files.file;
@@ -248,61 +255,23 @@ app.post("/api/upload", async (req, res) => {
       }
     );
 
-    const jsonResponse = {
+    res.status(200).json({
       creator: "FuadXyro",
       status: true,
       message: "File uploaded successfully to GitHub",
       data: {
-        url: `https://${req.get("host")}/${fileName}`, // otomatis pakai domain server kamu
-        github_url: response.data.content.html_url, // url github repo
+        url: `https://${req.get("host")}/${fileName}`,
+        github_url: response.data.content.html_url,
       },
-    };
-
-    res.set("Content-Type", "application/json");
-    res.status(200).send(JSON.stringify(jsonResponse, null, 2));
+    });
   } catch (err) {
     console.error(err.response?.data || err.message);
-    res.status(500).send("Error uploading to GitHub.");
+    res.status(500).json({
+      creator: "FuadXyro",
+      status: false,
+      message: "Error uploading to GitHub",
+      error: err.response?.data || err.message,
+    });
   }
 });
-
-// ===== Route ambil file dari GitHub (proxy) =====
-app.get("/:filename", async (req, res) => {
-  const filename = req.params.filename;
-  const rawUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/Image/${filename}`;
-  try {
-    const response = await axios.get(rawUrl, { responseType: "arraybuffer" });
-    res.set("Content-Type", response.headers["content-type"] || "application/octet-stream");
-    res.send(response.data);
-  } catch (err) {
-    res.status(404).send("File not found on GitHub.");
-  }
-});
-
-// 404
-app.get("/*", (req, res) => {
-  res.render("404.ejs");
-});
-
-// Start
-app.listen(PORT, () => {
-  console.clear();
-  cfonts.say("FuadXyro", {
-    font: "block",
-    align: "center",
-    colors: ["blueBright", "cyan"],
-    background: "transparent",
-    letterSpacing: 1,
-    lineHeight: 1.5,
-    space: true,
-    maxLength: "0",
-    gradient: true,
-    independentGradient: false,
-    transitionGradient: false,
-    env: "node",
-  });
-  console.log(`\x1b[36m%s\x1b[0m`, `Project by : FuadXyro`);
-  console.log("\x1b[33m%s\x1b[0m", "CDN Deskripsi : Media Hosting");
-  console.log("\x1b[33m%s\x1b[0m", "CDN Support : Mp3, Mp4, Image, File");
-  console.log("\x1b[35m%s\x1b[0m", `Server Online. port ${PORT}`);
-});
+  
