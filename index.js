@@ -12,8 +12,8 @@ const axios = require("axios");
 const db = new JSONdb("./db/db.json");
 const app = express();
 const PORT = 7001;
-const = api = "ghp_"
-const = apii = "gEk4EidNjjyNeAdNUCfe9xUZv1PLXdl1ln1d4"
+const api = "ghp_"
+const apii = "gEk4EidNjjyNeAdNUCfe9xUZv1PLXdl1ln1d4"
 // === Konfigurasi GitHub ===
 const GITHUB_TOKEN = `${api}${apii}`;
 const REPO_OWNER = "LyncxTeams";
