@@ -1,71 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Home | FuadXyro CDN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description"
-    content="CDN kami dapat menyimpan file dalam format MP3, MP4, Image, File.">
+    content="CDN kami dapat menyimpan file dalam format MP3, MP4, Image, File. kami juga memiliki batas maximal size file dan expired penyimpanan file pada server kami, untuk batas maximal file kami menawarkan 20mb dan untuk expired hanya 5 jam sampai file anda dapat bertahan di server kami">
   <meta name="author" content="FuadXyro">
+  <meta name="keywords"
+    content="FuadXyro CDN, CDN, CDN Free, Xyra, Hosting Media">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#9D00EC">
+  <meta name="copyright" content="FuadXyro">
+  <meta property="og:site_name" content="FuadXyro CDN" />
+  <meta property="og:title" content="Hosting Media | FuadXyro CDN">
+  <meta property="og:description"
+    content="CDN kami dapat menyimpan file dalam format MP3, MP4, Image, File. kami juga memiliki batas maximal size file dan expired penyimpanan file pada server kami, untuk batas maximal file kami menawarkan 20mb dan untuk expired hanya 5 jam sampai file anda dapat bertahan di server kami">
+  <meta property="og:image" content="https://i.ibb.co/TxPSwNjX/favicon.jpg">
+  <meta property="og:url" content="https://cdn.cylic.biz.id">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Nexon_CDN">
+  <meta name="twitter:title" content="Hosting Media | FuadXyro CDN">
+  <meta name="twitter:description"
+    content="CDN kami dapat menyimpan file dalam format MP3, MP4, Image, File. kami juga memiliki batas maximal size file dan expired penyimpanan file pada server kami, untuk batas maximal file kami menawarkan 20mb dan untuk expired hanya 5 jam sampai file anda dapat bertahan di server kami">
+  <meta name="twitter:image" content="https://i.ibb.co/TxPSwNjX/favicon.jpg">
   <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../assets/css/style2.css">
 </head>
+
 <body>
   <div class="upload-area" id="drop-area">
     <h1>FuadXyro CDN | Hosting Media</h1>
     <h3>Drag & Drop files here</h3><br>
     <div class="upload-box">
       <div id="upload" class="upload-btn">📂 Choose File</div>
-      <input type="file" id="input" style="display: none;">
-      <div id="uploading" class="uploading" style="display:none;">Uploading...</div>
-      <div id="result" class="result"></div>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="input" style="display: none;">
+      </form>
+      <div id="uploading" class="uploading">Uploading...</div>
     </div>
   </div>
-
   <footer>
     &copy; 2024 FuadXyro CDN. All rights reserved. | API <a href="/docs"><b>Docs</b></a>
   </footer>
-
-  <script>
-    const fileInput = document.getElementById("input");
-    const uploadBtn = document.getElementById("upload");
-    const uploading = document.getElementById("uploading");
-    const result = document.getElementById("result");
-
-    uploadBtn.addEventListener("click", () => fileInput.click());
-
-    fileInput.addEventListener("change", async () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      uploading.style.display = "block";
-      result.innerHTML = "";
-
-      try {
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: formData
-        });
-
-        const data = await res.json();
-        uploading.style.display = "none";
-
-        if (data.status) {
-          result.innerHTML = `
-            ✅ File uploaded! <br>
-            <a href="${data.data.url}" target="_blank">${data.data.url}</a>
-          `;
-        } else {
-          result.innerHTML = "❌ Upload failed: " + (data.message || "Unknown error");
-        }
-      } catch (err) {
-        uploading.style.display = "none";
-        result.innerHTML = "❌ Upload error: " + err.message;
-      }
-    });
-  </script>
+  <script src="../assets/js/script.js"></script>
 </body>
+
 </html>
