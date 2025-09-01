@@ -5,6 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Documentation</title>
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Prism.js untuk highlight code -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+  <style>
+    .code-container {
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #2d2d2d;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.2s;
+    }
+    .copy-btn:hover {
+      background: #444;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -62,7 +89,9 @@
 
       <div class="section__example">
         <h2 class="example__title">Example Usage with JavaScript</h2>
-        <pre class="example__code"><code>import fs from 'fs'
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode()">Copy</button>
+          <pre><code class="language-javascript">import fs from 'fs'
 import FormData from 'form-data'
 import axios from 'axios'
 
@@ -104,6 +133,7 @@ function makeId(length) {
 
 // Contoh penggunaan
 uploadFile('./tmp/example.pdf')</code></pre>
+        </div>
       </div>
     </section>
   </main>
@@ -111,5 +141,16 @@ uploadFile('./tmp/example.pdf')</code></pre>
   <footer class="footer">
     <p class="footer__text">© 2024 FuadXyro CDN. All rights reserved. | by <a href="https://api.zenkey.my.id" class="footer__link">FuadXyro</a></p>
   </footer>
+
+  <script>
+    function copyCode() {
+      const codeBlock = document.querySelector('.section__example code').innerText
+      navigator.clipboard.writeText(codeBlock).then(() => {
+        const btn = document.querySelector('.copy-btn')
+        btn.textContent = 'Copied!'
+        setTimeout(() => btn.textContent = 'Copy', 2000)
+      })
+    }
+  </script>
 </body>
 </html>
