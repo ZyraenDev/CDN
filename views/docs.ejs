@@ -15,16 +15,19 @@
     <section class="section">
       <h1 class="section__title">Upload File API</h1>
       <p class="section__description">Endpoint to upload files to the server.</p>
+
       <div class="section__endpoint">
         <h2 class="endpoint__title">Endpoint</h2>
         <code class="endpoint__code">POST /api/upload</code>
       </div>
+
       <div class="section__parameters">
         <h2 class="parameters__title">Request Body Parameters</h2>
         <ul class="parameters__list">
           <li class="parameters__item"><code>file</code>: The file to upload (multipart/form-data).</li>
         </ul>
       </div>
+
       <div class="section__responses">
         <h2 class="responses__title">Success Response</h2>
         <pre class="responses__code"><code>true OK</code></pre>
@@ -40,6 +43,7 @@
   }
 }</code></pre>
       </div>
+
       <div class="section__errors">
         <h2 class="errors__title">Error Responses</h2>
         <pre class="errors__code"><code>400 Bad Request</code></pre>
@@ -55,36 +59,57 @@
   "message": "Error uploading file."
 }</code></pre>
       </div>
+
       <div class="section__example">
         <h2 class="example__title">Example Usage with JavaScript</h2>
-        <pre class="example__code"><code>const axios = require('axios');
-const FormData = require('form-data');
-const fs = require('fs');
+        <pre class="example__code"><code>import fs from 'fs'
+import FormData from 'form-data'
+import axios from 'axios'
 
-async function uploadFile(filePath) {
-  const formData = new FormData();
-  formData.append('file', fs.createReadStream(filePath));
+// Upload file dari path lokal
+const uploadFile = async (filePath) => {
+  const formData = new FormData()
+  formData.append('file', fs.createReadStream(filePath))
 
   try {
-    const response = await axios.post('http://localhost:8090/api/upload', formData, {
-      headers: {
-        'Content-Type': \`multipart/form-data; boundary=\${formData._boundary}\`,
-      },
-    });
-    console.log('File uploaded successfully:', response.data);
+    const response = await axios.post('https://cdn.cylic.biz.id/api/upload', formData, {
+      headers: formData.getHeaders()
+    })
+    console.log('Upload berhasil:', response.data)
   } catch (error) {
-    console.error('Error uploading file:', error.message);
+    console.error('UploadFile Error:', error.message)
   }
 }
 
-// Example usage
-uploadFile('/path/to/your/file.pdf');</code></pre>
+// Upload buffer (misal gambar/video)
+const uploadImage = async (buffer) => {
+  try {
+    const url = \`https://cdn.cylic.biz.id/api/upload/to?url=\${encodeURIComponent(buffer)}&namefile=\${makeId(12)}\`
+    const response = await axios.get(url)
+    console.log('Upload berhasil:', response.data)
+  } catch (error) {
+    console.error('UploadImage Error:', error.message)
+  }
+}
+
+// Generator ID random
+function makeId(length) {
+  let result = ''
+  let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return result
+}
+
+// Contoh penggunaan
+uploadFile('./tmp/example.pdf')</code></pre>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p class="footer__text">© 2024 FuadXyro CDN. All rights reserved. | by <a href="https://api.zenkey.my.id" class="footer__link">FuadXyro/a></p>
+    <p class="footer__text">© 2024 FuadXyro CDN. All rights reserved. | by <a href="https://api.zenkey.my.id" class="footer__link">FuadXyro</a></p>
   </footer>
 </body>
 </html>
